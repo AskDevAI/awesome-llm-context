@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# The name of the output file
+OUTPUT_FILE="merged.md"
+
+# Ensure the output file is empty before we start
+> "$OUTPUT_FILE"
+
+# Loop through all .md files in the current directory, excluding the output file
+for f in *.md; do
+  if [ "$f" != "$OUTPUT_FILE" ]; then
+    echo "Appending $f..."
+    # Add a header based on the filename
+    filename_without_prefix="${f#LLM_}"
+    echo "# ${filename_without_prefix}" >> "$OUTPUT_FILE"
+    echo "" >> "$OUTPUT_FILE"
+    # Append the content of the file
+    cat "$f" >> "$OUTPUT_FILE"
+    echo "" >> "$OUTPUT_FILE"
+  fi
+done
+
+echo "All .md files have been merged into $OUTPUT_FILE"
